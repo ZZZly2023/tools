@@ -1,25 +1,44 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
+console.log('preload.js 开始加载')
+
 // 暴露受保护的API到渲染进程
 contextBridge.exposeInMainWorld('electronAPI', {
-  // 示例：获取应用版本
+  // 现有API
   getVersion: () => ipcRenderer.invoke('get-version'),
-  
-  // 示例：显示消息对话框
   showMessage: (message) => ipcRenderer.invoke('show-message', message),
-  
-  // 示例：获取系统信息
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
-  
-  // 示例：文件操作
   selectFile: () => ipcRenderer.invoke('select-file'),
   saveFile: (content) => ipcRenderer.invoke('save-file', content),
-  
-  // 示例：窗口操作
   minimizeWindow: () => ipcRenderer.invoke('minimize-window'),
   maximizeWindow: () => ipcRenderer.invoke('maximize-window'),
-  closeWindow: () => ipcRenderer.invoke('close-window')
+  closeWindow: () => ipcRenderer.invoke('close-window'),
+  
+  // 下载相关API
+  addMagnetDownload: (magnetLink) => ipcRenderer.invoke('add-magnet-download', magnetLink),
+  addTorrentFileDownload: (filePath) => ipcRenderer.invoke('add-torrent-file-download', filePath),
+  selectTorrentFile: () => {
+    console.log('preload selectTorrentFile 被调用')
+    return ipcRenderer.invoke('select-torrent-file')
+  },
+  pauseDownload: (taskId) => ipcRenderer.invoke('pause-download', taskId),
+  resumeDownload: (taskId) => ipcRenderer.invoke('resume-download', taskId),
+  removeDownload: (taskId) => ipcRenderer.invoke('remove-download', taskId),
+  getAllDownloads: () => ipcRenderer.invoke('get-all-downloads'),
+  pauseAllDownloads: () => ipcRenderer.invoke('pause-all-downloads'),
+  resumeAllDownloads: () => ipcRenderer.invoke('resume-all-downloads'),
+  openDownloadFolder: () => ipcRenderer.invoke('open-download-folder'),
+  
+  // 事件监听
+  onMagnetLinkDetected: (callback) => ipcRenderer.on('magnet-link-detected', callback),
+  onTorrentProgress: (callback) => ipcRenderer.on('torrent-progress', callback),
+  onTorrentCompleted: (callback) => ipcRenderer.on('torrent-completed', callback),
+  onTorrentError: (callback) => ipcRenderer.on('torrent-error', callback),
+  onTorrentPaused: (callback) => ipcRenderer.on('torrent-paused', callback),
+  onTorrentResumed: (callback) => ipcRenderer.on('torrent-resumed', callback)
 })
+
+console.log('electronAPI 对象已创建，包含方法:', Object.keys(contextBridge.exposeInMainWorld))
 
 // 监听来自主进程的消息
 ipcRenderer.on('app-message', (event, message) => {

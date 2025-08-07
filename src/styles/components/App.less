@@ -5,11 +5,14 @@
 @info-bg: linear-gradient(135deg, @primary-color 0%, @secondary-color 100%);
 
 .app {
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: @info-bg;
   color: white;
+  overflow-x: hidden; // 防止水平滚动
 
   .app-header {
     text-align: center;
@@ -33,10 +36,11 @@
 
   .app-main {
     flex: 1;
-    padding: 2rem;
-    max-width: 1200px;
+    padding: 2rem 1rem; // 减少左右内边距
+    max-width: 100%; // 移除最大宽度限制
     margin: 0 auto;
     width: 100%;
+    box-sizing: border-box; // 确保padding不会增加总宽度
   }
 
   .info-section, .actions-section, .features {
@@ -91,6 +95,29 @@
           box-shadow: 0 8px 25px fade(@warning-color, 40%);
         }
       }
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .app {
+    .app-header {
+      padding: 1.5rem 0.5rem;
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .app-main {
+      padding: 1rem 0.5rem;
+    }
+
+    .button-group {
+      grid-template-columns: 1fr; // 小屏幕下按钮垂直排列
     }
   }
 }

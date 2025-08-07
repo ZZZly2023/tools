@@ -1,0 +1,96 @@
+@primary-color: #667eea;
+@secondary-color: #764ba2;
+@success-color: #4facfe;
+@warning-color: #fa709a;
+@info-bg: linear-gradient(135deg, @primary-color 0%, @secondary-color 100%);
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: @info-bg;
+  color: white;
+
+  .app-header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: fade(white, 10%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid fade(white, 20%);
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, #fff, #f0f0f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+  }
+
+  .app-main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .info-section, .actions-section, .features {
+    background: fade(white, 10%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid fade(white, 20%);
+    h2 {
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+  }
+
+  .button-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      &.btn-primary {
+        background: linear-gradient(45deg, @primary-color, @secondary-color);
+        color: white;
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px fade(@primary-color, 40%);
+        }
+      }
+      &.btn-success {
+        background: linear-gradient(45deg, @success-color, #00f2fe);
+        color: white;
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px fade(@success-color, 40%);
+        }
+      }
+      &.btn-warning {
+        background: linear-gradient(45deg, @warning-color, #fee140);
+        color: white;
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px fade(@warning-color, 40%);
+        }
+      }
+    }
+  }
+}

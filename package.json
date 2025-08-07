@@ -26,11 +26,12 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
+    "concurrently": "^8.2.0",
     "electron": "^25.0.0",
     "electron-builder": "^24.6.4",
-    "concurrently": "^8.2.0",
-    "wait-on": "^7.0.1",
-    "vite": "^4.4.5"
+    "less": "^4.4.0",
+    "vite": "^4.4.5",
+    "wait-on": "^7.0.1"
   },
   "build": {
     "appId": "com.example.vite-react-electron-app",
@@ -55,4 +56,4 @@
       "target": "AppImage"
     }
   }
-} 
+}

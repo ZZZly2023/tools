@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './App.css'
+import './styles/components/App.less'
 
 function App() {
   const [version, setVersion] = useState('')

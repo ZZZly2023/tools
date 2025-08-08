@@ -17,10 +17,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // 下载相关API
   addMagnetDownload: (magnetLink) => ipcRenderer.invoke('add-magnet-download', magnetLink),
   addTorrentFileDownload: (filePath) => ipcRenderer.invoke('add-torrent-file-download', filePath),
-  selectTorrentFile: () => {
-    console.log('preload selectTorrentFile 被调用')
-    return ipcRenderer.invoke('select-torrent-file')
-  },
+  selectTorrentFile: () => ipcRenderer.invoke('select-torrent-file'),
+  parseMagnetMetadata: (magnetLink) => ipcRenderer.invoke('parse-magnet-metadata', magnetLink),
+  parseTorrentFileMetadata: (filePath) => ipcRenderer.invoke('parse-torrent-file-metadata', filePath),
+  addSelectiveMagnetDownload: (magnetLink, selectedFiles) => ipcRenderer.invoke('add-selective-magnet-download', magnetLink, selectedFiles),
+  addSelectiveTorrentFileDownload: (filePath, selectedFiles) => ipcRenderer.invoke('add-selective-torrent-file-download', filePath, selectedFiles),
   pauseDownload: (taskId) => ipcRenderer.invoke('pause-download', taskId),
   resumeDownload: (taskId) => ipcRenderer.invoke('resume-download', taskId),
   removeDownload: (taskId) => ipcRenderer.invoke('remove-download', taskId),
@@ -35,6 +36,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onTorrentCompleted: (callback) => ipcRenderer.on('torrent-completed', callback),
   onTorrentError: (callback) => ipcRenderer.on('torrent-error', callback),
   onTorrentPaused: (callback) => ipcRenderer.on('torrent-paused', callback),
+  onTorrentMetadata: (callback) => ipcRenderer.on('torrent-metadata', callback),
   onTorrentResumed: (callback) => ipcRenderer.on('torrent-resumed', callback)
 })
 

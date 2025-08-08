@@ -3,6 +3,7 @@
 @success-color: #4facfe;
 @warning-color: #fa709a;
 @danger-color: #ff4757;
+@text-color: #333333;
 @info-bg: linear-gradient(135deg, @primary-color 0%, @secondary-color 100%);
 
 .download-manager {
@@ -127,6 +128,22 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 1rem;
+
+      // 已完成任务的紧凑样式
+      &.completed {
+        padding: 1rem 1.5rem;
+        align-items: center;
+        
+        .download-info {
+          .download-header {
+            margin-bottom: 0.5rem;
+          }
+          
+          .download-progress {
+            display: none; // 隐藏进度条区域
+          }
+        }
+      }
 
       .download-info {
         flex: 1;
@@ -283,6 +300,7 @@
     }
   }
 
+  // 模态对话框样式
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -298,54 +316,65 @@
 
     .modal {
       background: fade(white, 95%);
-      border-radius: 12px;
-      padding: 2rem;
-      min-width: 300px; // 减少最小宽度
-      max-width: 90vw; // 使用视口宽度
-      box-shadow: 0 20px 60px fade(black, 30%);
+      border-radius: 16px;
+      padding: 2.5rem;
+      min-width: 400px;
+      max-width: 90vw;
+      max-height: 80vh;
+      box-shadow: 0 20px 40px fade(black, 30%);
+      backdrop-filter: blur(10px);
+      border: 1px solid fade(white, 30%);
 
       h3 {
         margin: 0 0 1rem 0;
-        color: #333;
-        font-size: 1.3rem;
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: 600;
       }
-
       p {
-        color: #666;
-        margin-bottom: 1rem;
+        color: #2c3e50;
       }
 
       .magnet-input {
         width: 100%;
-        padding: 0.75rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
+        padding: 1rem;
+        border: 2px solid fade(@primary-color, 30%);
+        border-radius: 12px;
         font-size: 1rem;
-        margin-bottom: 1rem;
-        transition: border-color 0.3s ease;
-        box-sizing: border-box; // 确保padding不会增加宽度
+        background: fade(white, 80%);
+        color: #2c3e50;
+        margin: 1rem 0 2rem 0;
+        transition: all 0.3s ease;
 
         &:focus {
           outline: none;
           border-color: @primary-color;
+          background: white;
+          box-shadow: 0 0 0 3px fade(@primary-color, 20%);
+        }
+
+        &::placeholder {
+          color: #7f8c8d;
         }
       }
 
       .magnet-link {
-        background: #f5f5f5;
-        padding: 0.75rem;
+        background: fade(@primary-color, 10%);
+        padding: 1rem;
         border-radius: 8px;
-        font-family: 'Courier New', monospace;
+        font-family: monospace;
         font-size: 0.9rem;
-        color: #333;
-        margin-bottom: 1rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
         word-break: break-all;
+        border: 1px solid fade(@primary-color, 20%);
       }
 
       .modal-actions {
         display: flex;
         gap: 1rem;
         justify-content: flex-end;
+        margin-top: 1.5rem;
 
         .btn {
           padding: 0.75rem 1.5rem;
@@ -361,18 +390,137 @@
           &.btn-primary {
             background: linear-gradient(45deg, @primary-color, @secondary-color);
             color: white;
-            &:hover {
+            box-shadow: 0 4px 15px fade(@primary-color, 30%);
+
+            &:hover:not(:disabled) {
               transform: translateY(-2px);
               box-shadow: 0 8px 25px fade(@primary-color, 40%);
+            }
+
+            &:disabled {
+              background: linear-gradient(45deg, #ccc, #999);
+              cursor: not-allowed;
+              transform: none;
+              box-shadow: 0 2px 8px fade(#ccc, 20%);
             }
           }
 
           &.btn-secondary {
-            background: #e0e0e0;
-            color: #333;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            color: #495057;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 8px fade(#000, 10%);
+
             &:hover {
-              background: #d0d0d0;
-              transform: translateY(-2px);
+              background: linear-gradient(45deg, #e9ecef, #dee2e6);
+              transform: translateY(-1px);
+              box-shadow: 0 4px 12px fade(#000, 15%);
+            }
+          }
+        }
+      }
+    }
+
+    // 文件选择对话框特殊样式
+    .file-selector-modal {
+      min-width: 600px;
+      max-width: 80vw;
+
+      .file-info {
+        background: fade(@primary-color, 5%);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border: 1px solid fade(@primary-color, 15%);
+
+        p {
+          margin: 0.5rem 0;
+          color: #2c3e50;
+          font-size: 0.95rem;
+
+          strong {
+            color: @primary-color;
+          }
+        }
+      }
+
+      .file-selector-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background: fade(@primary-color, 8%);
+        border-radius: 8px;
+        border: 1px solid fade(@primary-color, 15%);
+
+        .select-all-checkbox {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 500;
+          color: #2c3e50;
+          cursor: pointer;
+
+          input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: @primary-color;
+          }
+        }
+
+        .selected-count {
+          font-size: 0.9rem;
+          color: @primary-color;
+          font-weight: 500;
+        }
+      }
+
+      .file-list {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid fade(@text-color, 20%);
+        border-radius: 8px;
+        background: fade(white, 60%);
+
+        .file-item {
+          border-bottom: 1px solid fade(@text-color, 10%);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .file-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+              background: fade(@primary-color, 5%);
+            }
+
+            input[type="checkbox"] {
+              width: 16px;
+              height: 16px;
+              accent-color: @primary-color;
+              flex-shrink: 0;
+            }
+
+            .file-name {
+              flex: 1;
+              color: #2c3e50;
+              font-size: 0.9rem;
+              word-break: break-word;
+            }
+
+            .file-size {
+              color: #7f8c8d;
+              font-size: 0.85rem;
+              font-weight: 500;
+              flex-shrink: 0;
             }
           }
         }
